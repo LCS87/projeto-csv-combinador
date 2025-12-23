@@ -1,46 +1,59 @@
-# 🗂️ Projeto de Combinação de CSVs
+# projeto-csv-combinador
 
-Este projeto automatiza a leitura, validação e combinação de arquivos CSV em uma única planilha consolidada.
+Ferramenta simples para buscar CSVs em `input/` (e subpastas), validar esquema e combinar em um único arquivo em `output/planilha_combinada.csv`.
 
-## 🚀 Funcionalidade
-- Percorre a pasta `input` e todas as suas subpastas.
-- Lê arquivos CSV com separador `;` e codificação `utf-8-sig`.
-- Valida se as colunas estão na ordem correta:
-  - `CNPJ`
-  - `RazaoSocial`
-  - `EnderecoCompleto`
-  - `Email`
-  - `SituacaoCadastral`
-  - `DataAbertura`
-  - `NaturezaJuridica`
-  - `CapitalSocial`
-  - `ENRIQUECIMENTO`
-  - `Operadora`
-  - `Telefone`
-- Ignora arquivos com estrutura diferente.
-- Concatena todos os arquivos válidos em um único DataFrame.
-- Exporta o resultado para `output/planilha_combinada.csv` no formato **TSV** (tabulação como delimitador).
+## Objetivo
+Combinar várias planilhas CSV geradas por etapas anteriores (por exemplo: saídas de processos de consulta) em um único arquivo tab-delimitado.
 
-## 📂 Estrutura de Pastas
+## Pré-requisitos
+- Python 3.8+ (recomendado 3.10/3.11)
+- Criar um ambiente virtual e instalar dependências
 
-projeto-csv-combinador/ │── input/   
-Pasta com os arquivos CSV de entrada│── input/    
-Pasta onde será gerado o arquivo combinado │── output/   
-Código principal  │── script.py   
-Documentação │── README.md    
+## Instalação (PowerShell)
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
+## Estrutura esperada
+- `input/` : pasta onde o script procura arquivos `.csv` (pesquisa recursiva)
+- `output/`: pasta onde o arquivo combinado será salvo
 
+### Colunas esperadas
+O script espera que os CSVs tenham exatamente as colunas (mesma ordem):
 
-## ▶️ Como Executar
-1. Instale as dependências:
-   ```bash
-   pip install pandas
+```
+CNPJ
+RazaoSocial
+EnderecoCompleto
+Email
+SituacaoCadastral
+DataAbertura
+NaturezaJuridica
+CapitalSocial
+ENRIQUECIMENTO
+Operadora
+Telefone
+```
 
-2 - Coloque seus arquivos CSV na pasta input/.
+Se algum arquivo tiver esquema diferente ele será ignorado e mostrado no log.
 
-3 - Execute o script: python script.py
+## Uso
+```powershell
+# Ative o venv
+.\.venv\Scripts\Activate.ps1
 
-4 - O resultado estará em:
-output/planilha_combinada.csv
+# Executar
+python combinar_planilhas.py
+```
 
-   
+O arquivo combinado será salvo em `output/planilha_combinada.csv` (delimitador `\t`).
+
+## Observações importantes
+- O script lê CSVs usando `sep=';'` e `encoding='utf-8-sig'`. Ajuste se seus arquivos usarem outro separador/encoding.
+- As dependências atuais estão travadas em `requirements.txt` para reprodutibilidade.
+- Melhorias recomendadas: adicionar CLI (`argparse`/`typer`), logs mais estruturados, suporte a schema flexível, processamento por `chunksize` para arquivos grandes, e testes automatizados.
+
+## Contato
+Abra uma issue ou PR neste repositório com melhorias ou bugs encontrados.
